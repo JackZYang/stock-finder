@@ -1,7 +1,7 @@
 import React from "react";
 import "react-tabulator/lib/styles.css"; // required styles
-import "react-tabulator/lib/css/tabulator.min.css"; // theme
-import { ReactTabulator } from "react-tabulator"; // for React 15.x, use import { React15Tabulator }
+import "react-tabulator/lib/css/semantic-ui/tabulator_semantic-ui.min.css"; // theme
+import { ReactTabulator } from "react-tabulator";
 
 const Table = ({ row }) => {
   const columns = [
@@ -13,6 +13,15 @@ const Table = ({ row }) => {
       formatterParams: {
         url: cell => "https://finance.yahoo.com/quote/" + cell.getValue(),
         target: "_blank"
+      }
+    },
+    {
+      title: "Market Cap",
+      field: "marketCap",
+      formatter: cell => {
+        let value = cell.getValue();
+
+        return value;
       }
     },
     { title: "Previous Close", field: "previousClose" },
@@ -32,7 +41,7 @@ const Table = ({ row }) => {
       formatter: cell => {
         let value = cell.getValue();
         cell.getElement().style.color = value >= 0 ? "#02662C" : "#FF5733";
-        return (value * 100).toFixed(2);
+        return (value * 100).toFixed(2) + "%";
       }
     }
   ];

@@ -9,9 +9,11 @@ const token = "sk_c6660239c1ff43839bf85c8d9415257e";
 function App() {
   const [symbol, setSymbol] = useState("");
   const [row, setRow] = useState([]);
+  const [error, setError] = useState(false);
 
   const handleChange = e => {
     setSymbol(e.target.value);
+    setError(false);
   };
 
   const handleSubmit = () => {
@@ -29,6 +31,7 @@ function App() {
           row.push({
             symbol: stockInfo.symbol,
             companyName: stockInfo.companyName,
+            marketCap: stockInfo.marketCap,
             previousClose: stockInfo.previousClose,
             latestPrice: stockInfo.latestPrice,
             change: stockInfo.change,
@@ -36,13 +39,16 @@ function App() {
           });
           setSymbol("");
         }
-      });
+      })
+      .catch(error => setError(true));
   };
 
   return (
     <div>
+      <h1>Stock Finder</h1>
       <Input
         icon="search"
+        error={error}
         onChange={handleChange}
         onKeyPress={event => {
           if (event.key === "Enter") {
