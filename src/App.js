@@ -1,24 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import axios from "axios";
+import { Button, Input } from "semantic-ui-react";
+import Table from "./Table";
+import "./App.css";
+
+const token = "sk_c6660239c1ff43839bf85c8d9415257e";
 
 function App() {
+  const [symbol, setSymbol] = useState("");
+  const [row, setRow] = useState([]);
+
+  const handleChange = e => {
+    setSymbol(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    axios
+      .get(
+        "https://cloud.iexapis.com/stable/stock/" +
+          symbol +
+          "/quote?token=" +
+          token
+      )
+      .then(res => {
+        const stockInfo = res.data;
+        console.log(stockInfo);
+        if (row.filter(obj => obj.symbol === stockInfo.symbol).length === 0) {
+          row.push({
+            symbol: stockInfo.symbol,
+            companyName: stockInfo.companyName,
+            previousClose: stockInfo.previousClose,
+            latestPrice: stockInfo.latestPrice,
+            change: stockInfo.change,
+            changePercent: stockInfo.changePercent
+          });
+          setSymbol("");
+        }
+      });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Input
+        icon="search"
+        onChange={handleChange}
+        onKeyPress={event => {
+          if (event.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+        value={symbol}
+        placeholder="Search..."
+      />
+      <Button color="orange" onClick={handleSubmit}>
+        Add
+      </Button>
+      <Table row={row} />
     </div>
   );
 }
