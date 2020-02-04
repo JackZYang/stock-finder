@@ -8,7 +8,7 @@ const token = "sk_c6660239c1ff43839bf85c8d9415257e";
 
 function App() {
   const [symbol, setSymbol] = useState("");
-  const [row, setRow] = useState([]);
+  const [rows, setRows] = useState([]);
   const [error, setError] = useState(false);
 
   const handleChange = e => {
@@ -26,9 +26,10 @@ function App() {
       )
       .then(res => {
         const stockInfo = res.data;
-        console.log(stockInfo);
-        if (row.filter(obj => obj.symbol === stockInfo.symbol).length === 0) {
-          row.push({
+        if (
+          rows.filter(stock => stock.symbol === stockInfo.symbol).length === 0
+        ) {
+          rows.push({
             symbol: stockInfo.symbol,
             companyName: stockInfo.companyName,
             marketCap: stockInfo.marketCap,
@@ -44,7 +45,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app">
       <h1>Stock Finder</h1>
       <Input
         icon="search"
@@ -56,12 +57,13 @@ function App() {
           }
         }}
         value={symbol}
-        placeholder="Search..."
+        placeholder="Symbol"
       />
       <Button color="orange" onClick={handleSubmit}>
         Add
       </Button>
-      <Table row={row} />
+      <div className="error">{error && "Symbol could not be found"}</div>
+      <Table rows={rows} />
     </div>
   );
 }

@@ -1,4 +1,13 @@
+.app {
+  padding: 5px;
+}
+
 h1 {
   text-align: center;
   padding: 10px;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
 }

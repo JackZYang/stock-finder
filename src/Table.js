@@ -3,8 +3,17 @@ import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/semantic-ui/tabulator_semantic-ui.min.css"; // theme
 import { ReactTabulator } from "react-tabulator";
 
-const Table = ({ row }) => {
+const Table = ({ rows }) => {
   const columns = [
+    {
+      formatter: "buttonCross",
+      width: 60,
+      align: "center",
+      cellClick: function(e, cell) {
+        rows.splice(rows.indexOf(cell.getData()), 1);
+        cell.getRow().delete();
+      }
+    },
     { title: "Name", field: "companyName" },
     {
       title: "Symbol",
@@ -32,7 +41,7 @@ const Table = ({ row }) => {
       formatter: cell => {
         let value = cell.getValue();
         cell.getElement().style.color = value >= 0 ? "#02662C" : "#FF5733";
-        return value;
+        return (value > 0 ? "+" : "") + value;
       }
     },
     {
@@ -41,7 +50,7 @@ const Table = ({ row }) => {
       formatter: cell => {
         let value = cell.getValue();
         cell.getElement().style.color = value >= 0 ? "#02662C" : "#FF5733";
-        return (value * 100).toFixed(2) + "%";
+        return (value > 0 ? "+" : "") + (value * 100).toFixed(2) + "%";
       }
     }
   ];
@@ -51,7 +60,7 @@ const Table = ({ row }) => {
   };
   return (
     <div>
-      <ReactTabulator columns={columns} data={row} options={options} />
+      <ReactTabulator columns={columns} data={rows} options={options} />
     </div>
   );
 };
