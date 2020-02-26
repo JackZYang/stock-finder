@@ -29,15 +29,18 @@ function App() {
         if (
           rows.filter(stock => stock.symbol === stockInfo.symbol).length === 0
         ) {
-          rows.push({
-            symbol: stockInfo.symbol,
-            companyName: stockInfo.companyName,
-            marketCap: stockInfo.marketCap,
-            previousClose: stockInfo.previousClose,
-            latestPrice: stockInfo.latestPrice,
-            change: stockInfo.change,
-            changePercent: stockInfo.changePercent
-          });
+          setRows(rows => [
+            ...rows,
+            {
+              symbol: stockInfo.symbol,
+              companyName: stockInfo.companyName,
+              marketCap: stockInfo.marketCap,
+              previousClose: stockInfo.previousClose,
+              latestPrice: stockInfo.latestPrice,
+              change: stockInfo.change,
+              changePercent: stockInfo.changePercent
+            }
+          ]);
           setSymbol("");
         }
       })
