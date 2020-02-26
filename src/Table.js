@@ -3,14 +3,16 @@ import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/semantic-ui/tabulator_semantic-ui.min.css"; // theme
 import { ReactTabulator } from "react-tabulator";
 
-const Table = ({ rows }) => {
+const Table = ({ rows, setRows }) => {
   const columns = [
     {
       formatter: "buttonCross",
       width: 60,
       align: "center",
       cellClick: function(e, cell) {
-        rows.splice(rows.indexOf(cell.getData()), 1);
+        const stocks = rows;
+        stocks.splice(rows.indexOf(cell.getData()), 1);
+        setRows(stocks);
         cell.getRow().delete();
       }
     },

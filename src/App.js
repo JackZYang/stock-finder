@@ -29,18 +29,17 @@ function App() {
         if (
           rows.filter(stock => stock.symbol === stockInfo.symbol).length === 0
         ) {
-          setRows(rows => [
-            ...rows,
-            {
-              symbol: stockInfo.symbol,
-              companyName: stockInfo.companyName,
-              marketCap: stockInfo.marketCap,
-              previousClose: stockInfo.previousClose,
-              latestPrice: stockInfo.latestPrice,
-              change: stockInfo.change,
-              changePercent: stockInfo.changePercent
-            }
-          ]);
+          const stocks = rows;
+          stocks.push({
+            symbol: stockInfo.symbol,
+            companyName: stockInfo.companyName,
+            marketCap: stockInfo.marketCap,
+            previousClose: stockInfo.previousClose,
+            latestPrice: stockInfo.latestPrice,
+            change: stockInfo.change,
+            changePercent: stockInfo.changePercent
+          });
+          setRows(stocks);
           setSymbol("");
         }
       })
@@ -66,7 +65,7 @@ function App() {
         Add
       </Button>
       <div className="error">{error && "Symbol could not be found"}</div>
-      <Table rows={rows} />
+      <Table rows={rows} setRows={setRows} />
     </div>
   );
 }
